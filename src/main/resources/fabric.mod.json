@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"id": "ahead",
+	"version": "${version}",
+	"name": "Ahead",
+	"description": "Configurable Vulkan swapchain image count (render-ahead limit).",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/ahead/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.thatmg393.Ahead"
+		],
+		"modmenu": [
+			"com.thatmg393.compat.ModMenuCompat"
+		]
+	},
+	"custom": {
+		"sodium:config_api_user": "com.thatmg393.compat.SodiumCompat"
+	},
+	"mixins": [
+		"ahead.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"yet_another_config_lib_v3": "*",
+		"modmenu": "*",
+		"sodium": "*"
+	}
+}
