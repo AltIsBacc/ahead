@@ -3,6 +3,8 @@
 	"package": "com.thatmg393.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
+		"FrontendGpuSurfaceMixin",
+		"GlSurfaceMixin",
 		"VulkanGpuSurfaceMixin"
 	],
 	"injectors": {

@@ -10,8 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public final class AheadConfig {
-	public static final int MIN_IMAGE_COUNT = 2;
-	public static final int MAX_IMAGE_COUNT = 8;
+	public static final int MIN_IMAGE_COUNT = 1;
+	public static final int MAX_IMAGE_COUNT = 10;
 	public static final int DEFAULT_IMAGE_COUNT = 3;
 
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -25,7 +25,16 @@ public final class AheadConfig {
 		return instance;
 	}
 
+	private static boolean loaded;
+
+	public static void ensureLoaded() {
+		if (!loaded) {
+			load();
+		}
+	}
+
 	public static void load() {
+		loaded = true;
 		if (Files.exists(PATH)) {
 			try {
 				AheadConfig loaded = GSON.fromJson(Files.readString(PATH), AheadConfig.class);

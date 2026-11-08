@@ -18,7 +18,7 @@ public final class AheadYaclScreen {
 		Option<Integer> imageCount = Option.<Integer>createBuilder()
 			.name(Component.literal("Swapchain Image Count"))
 			.description(OptionDescription.of(Component.literal(
-				"How many frames the Vulkan swapchain can queue. Vanilla uses 3. Higher values can smooth frame pacing at the cost of input latency. Applies the next time the swapchain is recreated, such as when resizing the window or toggling VSync.")))
+				"How many frames the swapchain can queue (Vulkan) or the render-ahead limit (OpenGL, capped at 3 by the engine). Vanilla uses 3. Higher values can smooth frame pacing at the cost of input latency. Applies on the next frame.")))
 			.binding(AheadConfig.DEFAULT_IMAGE_COUNT, () -> config.swapchainImageCount, value -> config.swapchainImageCount = value)
 			.controller(option -> IntegerSliderControllerBuilder.create(option)
 				.range(AheadConfig.MIN_IMAGE_COUNT, AheadConfig.MAX_IMAGE_COUNT)

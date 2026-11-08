@@ -3,7 +3,7 @@
 	"id": "ahead",
 	"version": "${version}",
 	"name": "Ahead",
-	"description": "Configurable Vulkan swapchain image count (render-ahead limit).",
+	"description": "Configurable swapchain image count / render-ahead limit for the Vulkan and OpenGL backends.",
 	"authors": [
 		"Me!"
 	],
@@ -20,10 +20,10 @@
 		],
 		"modmenu": [
 			"com.thatmg393.compat.ModMenuCompat"
+		],
+		"sodium:config_api_user": [
+			"com.thatmg393.compat.SodiumCompat"
 		]
-	},
-	"custom": {
-		"sodium:config_api_user": "com.thatmg393.compat.SodiumCompat"
 	},
 	"mixins": [
 		"ahead.mixins.json"

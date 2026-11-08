@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 public class SodiumCompat implements ConfigEntryPoint {
 	@Override
 	public void registerConfigLate(ConfigBuilder builder) {
-		AheadConfig config = AheadConfig.get();
+		AheadConfig.ensureLoaded();
 
 		builder.registerOwnModOptions()
 			.addPage(builder.createOptionPage()
@@ -17,10 +17,11 @@ public class SodiumCompat implements ConfigEntryPoint {
 				.addOptionGroup(builder.createOptionGroup()
 					.addOption(builder.createIntegerOption(Ahead.id("swapchain_image_count"))
 						.setName(Component.literal("Swapchain Image Count"))
-						.setTooltip(Component.literal("Frames the Vulkan swapchain can queue. Vanilla uses 3. Applies the next time the swapchain is recreated, such as when resizing the window or toggling VSync."))
+						.setTooltip(Component.literal("Frames the swapchain can queue (Vulkan) or the render-ahead limit (OpenGL). Vanilla uses 3. Applies on the next frame."))
 						.setRange(AheadConfig.MIN_IMAGE_COUNT, AheadConfig.MAX_IMAGE_COUNT, 1)
 						.setDefaultValue(AheadConfig.DEFAULT_IMAGE_COUNT)
-						.setBinding(value -> config.swapchainImageCount = value, () -> config.swapchainImageCount)
+						.setValueFormatter(value -> Component.literal(String.valueOf(value))) 
+						.setBinding(value -> AheadConfig.get().swapchainImageCount = value, () -> AheadConfig.get().swapchainImageCount)
 						.setStorageHandler(AheadConfig::save))));
 	}
 }
