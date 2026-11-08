@@ -14,7 +14,7 @@ public class Ahead implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("i am now ahead by N frames ;> (N+1 on vk [not impld])");
+		LOGGER.info("you are now ahead-ing!");
 		AheadConfig.load();
 	}
 

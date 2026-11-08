@@ -19,7 +19,7 @@ public class VulkanGpuSurfaceMixin {
 		)
 	)
 	private int ahead$imageCount(int original) {
-		int spoofed = AheadConfig.get().swapchainImageCount + 1; // apparently 0 is the main image (to larp is to not larp)
+		int spoofed = AheadConfig.get().swapchainImageCount + 1; // apparently 0 is the main image so we +1 (to larp is to not larp)
 		Ahead.LOGGER.info("hey, ahead here. ur now rendering ahead by " + spoofed + " frame/s");
 		return spoofed;
 	}
