@@ -1,3 +1,31 @@
 # Ahead
+
 i am speed
 
+Ahead lets you change how far Minecraft renders ahead, on both the Vulkan and OpenGL backends.
+
+- **Vulkan:** changes the number of images requested for the swapchain
+- **OpenGL:** limits how many frames the CPU can get ahead of the GPU
+
+Lower values can reduce input latency. Higher values can smooth out frame pacing, at the cost of latency. Results depend on your hardware and driver.
+
+## Requirements
+
+- Minecraft 26.3
+- Fabric Loader 0.20.1 or newer
+- Fabric API
+- Java 25
+
+## Configuration
+
+The setting is called **Swapchain Image Count**. It ranges from 1 to 10, defaults to 3, and applies without restarting the game.
+
+You can change it:
+
+- in Sodium's video settings, if [Sodium](https://modrinth.com/mod/sodium) is installed
+- through [Mod Menu](https://modrinth.com/mod/modmenu), if [YetAnotherConfigLib](https://modrinth.com/mod/yacl) is also installed
+- by editing `config/ahead.json` while the game is closed
+
+## License
+
+All rights reserved. See [LICENSE](LICENSE).
