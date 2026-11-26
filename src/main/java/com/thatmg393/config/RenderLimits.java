@@ -4,14 +4,20 @@ package com.thatmg393.config;
 public final class RenderLimits {
 	/** Used until a surface is configured, and when the device reports no maximum. */
 	private static final int FALLBACK_MAX = 10;
-	/** The engine's GlCommandEncoder.MAX_SUBMITS_IN_FLIGHT (2) + 1. That class is package-private. */
-	private static final int OPENGL_MAX = 3;
+	/** The engine's GlCommandEncoder.MAX_SUBMITS_IN_FLIGHT. That class is package-private. */
+	public static final int OPENGL_VANILLA_SUBMITS = 2;
+	/** The engine's initial GlCommandEncoder.currentSubmitIndex. */
+	public static final long OPENGL_FIRST_SUBMIT = 2L;
+	private static final int OPENGL_MAX = 10;
+	/** Slots needed for the deepest queue. The setting is one more than the submits in flight. */
+	public static final int OPENGL_RING_SIZE = OPENGL_MAX - 1;
 
 	private enum Backend { UNKNOWN, VULKAN, OPENGL }
 
 	private static Backend backend = Backend.UNKNOWN;
 	private static int minImages;
 	private static int maxImages; // 0 means no limit
+	private static boolean deepOpenGlQueue;
 
 	private RenderLimits() {
 	}
@@ -26,10 +32,23 @@ public final class RenderLimits {
 		backend = Backend.OPENGL;
 	}
 
+	public static void allowDeepOpenGlQueue() {
+		deepOpenGlQueue = true;
+	}
+
+	private static int openGlMax() {
+		return deepOpenGlQueue ? OPENGL_MAX : OPENGL_VANILLA_SUBMITS + 1;
+	}
+
+	/** Submits the engine may have in flight for a setting. Never fewer than vanilla. */
+	public static int openGlSubmitDepth(int setting) {
+		return Math.max(OPENGL_VANILLA_SUBMITS, Math.min(openGlMax(), setting) - 1);
+	}
+
 	/** Highest setting that still has an effect. */
 	public static int maxSetting() {
 		return switch (backend) {
-			case OPENGL -> OPENGL_MAX;
+			case OPENGL -> openGlMax();
 			// the setting is one less than the image count; keep at least 2 so sliders have a range
 			case VULKAN -> maxImages > 0 ? Math.max(2, maxImages - 1) : FALLBACK_MAX;
 			case UNKNOWN -> FALLBACK_MAX;
@@ -60,7 +79,9 @@ public final class RenderLimits {
 			case OPENGL -> text
 				+ "\n\nOpenGL: at " + setting + ", the CPU can get up to " + Math.max(1, clamp(setting) - 1)
 				+ " frame(s) ahead of the GPU. 1 and 2 behave the same."
-				+ "\n\nMaximum " + OPENGL_MAX + ": the game itself never queues more.";
+				+ (deepOpenGlQueue
+					? "\n\nAbove 3 goes past the game's own limit. This is experimental and adds input lag."
+					: "\n\nMaximum 3: your driver lacks persistent buffer mapping, so queuing more is not safe.");
 			case UNKNOWN -> text;
 		};
 	}
