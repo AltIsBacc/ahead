@@ -1,6 +1,7 @@
 plugins {
 	id("net.fabricmc.fabric-loom")
 	`maven-publish`
+	id("com.modrinth.minotaur") version "2.10.0"
 }
 
 repositories {
@@ -68,6 +69,22 @@ tasks.jar {
 	from("LICENSE") {
 		rename { "${it}_$projectName" }
 	}
+}
+
+modrinth {
+	projectId = "P8dOpO3T"
+	versionNumber = project.version.toString()
+	versionName = "Ahead ${project.version}"
+	versionType = "release"
+	changelog = providers.fileContents(layout.projectDirectory.file("CHANGELOG.md")).asText
+	uploadFile.set(tasks.jar)
+	gameVersions.add(providers.gradleProperty("minecraft_version"))
+	loaders.add("fabric")
+	environment = "client_only"
+	debugMode = providers.environmentVariable("MODRINTH_DEBUG").map { it.toBoolean() }.orElse(false)
+
+	required.project("fabric-api")
+	optional.project("sodium", "modmenu", "yacl")
 }
 
 publishing {

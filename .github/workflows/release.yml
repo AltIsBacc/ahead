@@ -1,0 +1,44 @@
+# Builds the mod and uploads it to Modrinth.
+# Push a tag matching the version in gradle.properties (e.g. v1.0.0) to publish,
+# or run it manually with "dry_run" checked to print the upload without sending it.
+# Needs a MODRINTH_TOKEN repository secret.
+
+name: release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: print the upload without publishing
+        type: boolean
+        default: true
+
+jobs:
+  modrinth:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v6
+      - name: validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v6
+      - name: setup jdk
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'microsoft'
+      - name: check tag matches version
+        if: github.ref_type == 'tag'
+        run: |
+          version="$(sed -n 's/^version=//p' gradle.properties)"
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match version $version"
+            exit 1
+          fi
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: build and publish
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          MODRINTH_DEBUG: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: ./gradlew build modrinth --no-configuration-cache
