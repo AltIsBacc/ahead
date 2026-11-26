@@ -5,15 +5,16 @@
 	"name": "Ahead",
 	"description": "Configurable swapchain image count / render-ahead limit for the Vulkan and OpenGL backends.",
 	"authors": [
-		"Me!"
+		"AltIsBacc"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/project/P8dOpO3T",
+		"sources": "https://github.com/AltIsBacc/ahead",
+		"issues": "https://github.com/AltIsBacc/ahead/issues"
 	},
-	"license": "CC0-1.0",
+	"license": "All-Rights-Reserved",
 	"icon": "assets/ahead/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"main": [
 			"com.thatmg393.Ahead"
