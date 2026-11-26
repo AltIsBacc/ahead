@@ -20,7 +20,7 @@ public class SodiumCompat implements ConfigEntryPoint {
 				.addOptionGroup(builder.createOptionGroup()
 					.addOption(builder.createIntegerOption(Ahead.id("swapchain_image_count"))
 						.setName(Component.literal("Swapchain Image Count"))
-						.setTooltip(Component.literal("Frames the swapchain can queue (Vulkan) or the render-ahead limit (OpenGL). Vanilla uses 3. Applies on the next frame."))
+						.setTooltip(value -> Component.literal(RenderLimits.tooltip(value)))
 						.setRangeProvider(state -> new Range(AheadConfig.MIN_IMAGE_COUNT, RenderLimits.maxSetting(), 1), ConfigState.UPDATE_ON_REBUILD)
 						.setDefaultProvider(state -> RenderLimits.clamp(AheadConfig.DEFAULT_IMAGE_COUNT), ConfigState.UPDATE_ON_REBUILD)
 						.setValueFormatter(value -> Component.literal(String.valueOf(value))) 

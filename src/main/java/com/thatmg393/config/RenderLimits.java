@@ -45,4 +45,23 @@ public final class RenderLimits {
 		int count = Math.max(clamp(setting) + 1, minImages);
 		return maxImages > 0 ? Math.min(count, maxImages) : count;
 	}
+
+	/** Setting description for the config screens, specific to the active backend. */
+	public static String tooltip(int setting) {
+		String text = "How far Minecraft may render ahead. Lower values can reduce input lag, "
+			+ "higher values can smooth out frame pacing. Applies without a restart.";
+		return switch (backend) {
+			case VULKAN -> text
+				+ "\n\nVulkan: at " + setting + ", the game asks for " + vulkanImageCount(setting)
+				+ " swapchain images. Vanilla asks for 3 (a value of 2)."
+				+ "\n\nMaximum " + maxSetting() + (maxImages > 0
+					? ": your device supports up to " + maxImages + " images."
+					: ": your device sets no limit, so Ahead stops here.");
+			case OPENGL -> text
+				+ "\n\nOpenGL: at " + setting + ", the CPU can get up to " + Math.max(1, clamp(setting) - 1)
+				+ " frame(s) ahead of the GPU. 1 and 2 behave the same."
+				+ "\n\nMaximum " + OPENGL_MAX + ": the game itself never queues more.";
+			case UNKNOWN -> text;
+		};
+	}
 }
