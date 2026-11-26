@@ -13,7 +13,6 @@ Lower values can reduce input latency. Higher values can smooth out frame pacing
 
 - Minecraft 26.3
 - Fabric Loader 0.20.1 or newer
-- Fabric API
 - Java 25
 
 ## Configuration

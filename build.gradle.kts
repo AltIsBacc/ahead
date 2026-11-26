@@ -27,8 +27,6 @@ dependencies {
 	minecraft("com.mojang:minecraft:${providers.gradleProperty("minecraft_version").get()}")
 	implementation("net.fabricmc:fabric-loader:${providers.gradleProperty("loader_version").get()}")
 
-	implementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
-
 	val yacl = "dev.isxander:yet-another-config-lib:${providers.gradleProperty("yacl_version").get()}"
 	val modMenu = "com.terraformersmc:modmenu:${providers.gradleProperty("modmenu_version").get()}"
 	val sodium = "maven.modrinth:sodium:${providers.gradleProperty("sodium_version").get()}"
@@ -37,6 +35,8 @@ dependencies {
 	compileOnly(modMenu)
 	compileOnly(sodium)
 
+	// not used by Ahead itself, only needed to run the optional mods in the dev client
+	localRuntime("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
 	localRuntime(yacl)
 	localRuntime(modMenu)
 	localRuntime(sodium)
@@ -83,7 +83,6 @@ modrinth {
 	environment = "client_only"
 	debugMode = providers.environmentVariable("MODRINTH_DEBUG").map { it.toBoolean() }.orElse(false)
 
-	required.project("fabric-api")
 	optional.project("sodium", "modmenu", "yacl")
 }
 
