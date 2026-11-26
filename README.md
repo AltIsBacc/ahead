@@ -17,7 +17,10 @@ Lower values can reduce input latency. Higher values can smooth out frame pacing
 
 ## Configuration
 
-The setting is called **Swapchain Image Count**. It ranges from 1 to 10, defaults to 3, and applies without restarting the game.
+The setting is called **Swapchain Image Count**. It defaults to 3 and applies without restarting the game. The minimum is 1; the maximum depends on your setup:
+
+- **Vulkan:** one less than the most swapchain images your device supports (10 if it reports no limit)
+- **OpenGL:** 3, because the game itself never queues more
 
 You can change it:
 

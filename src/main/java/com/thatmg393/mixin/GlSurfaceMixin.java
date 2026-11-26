@@ -3,6 +3,7 @@ package com.thatmg393.mixin;
 import com.mojang.renderpearl.api.device.GpuSurface;
 import com.thatmg393.Ahead;
 import com.thatmg393.config.AheadConfig;
+import com.thatmg393.config.RenderLimits;
 import org.lwjgl.opengl.GL32C;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -25,7 +26,8 @@ public class GlSurfaceMixin {
 			}
 		}
 
-		int spoofed = Math.max(1, AheadConfig.get().swapchainImageCount - 1);
+		RenderLimits.useOpenGl();
+		int spoofed = Math.max(1, RenderLimits.clamp(AheadConfig.get().swapchainImageCount) - 1);
 		Ahead.LOGGER.info("hey, ahead here. ur now rendering ahead by " + spoofed + " frame/s");
 		this.ahead$fences = new long[spoofed];
 		this.ahead$frame = 0L;

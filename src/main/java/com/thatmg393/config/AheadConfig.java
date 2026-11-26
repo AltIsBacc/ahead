@@ -11,7 +11,6 @@ import java.nio.file.Path;
 
 public final class AheadConfig {
 	public static final int MIN_IMAGE_COUNT = 1;
-	public static final int MAX_IMAGE_COUNT = 10;
 	public static final int DEFAULT_IMAGE_COUNT = 3;
 
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -45,7 +44,6 @@ public final class AheadConfig {
 				Ahead.LOGGER.error("Failed to read {}, using defaults", PATH, e);
 			}
 		}
-		instance.swapchainImageCount = clamp(instance.swapchainImageCount);
 		save();
 	}
 
@@ -59,6 +57,7 @@ public final class AheadConfig {
 	}
 
 	private static int clamp(int value) {
-		return Math.max(MIN_IMAGE_COUNT, Math.min(MAX_IMAGE_COUNT, value));
+		// the upper bound depends on the device, see RenderLimits
+		return Math.max(MIN_IMAGE_COUNT, value);
 	}
 }
